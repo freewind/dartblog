@@ -1,0 +1,8 @@
+get     /             index
+get     /write        writePage
+post    /write        write
+get     /initData     initData
+get     /oc           oc
+get     /show/:id     show
+get     /login        login
+post    /login        doLogin

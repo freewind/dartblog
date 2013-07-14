@@ -1,0 +1,6 @@
+kill -9 `lsof -i tcp:3000 | grep 'dart' | awk '{print $2}'`
+dart --checked lib/routesParser.dart
+dart --checked bin/rythm.dart
+dart lib/app.dart
+
+

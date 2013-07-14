@@ -1,0 +1,2 @@
+supervisor -w lib,test -i lib/packages,lib/src/gen,lib/views.dart -n exit -e dart,html -x ./server0 dummy-but-required-argu
+
