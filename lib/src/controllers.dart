@@ -1,7 +1,8 @@
 library _controllers;
 
 import "package:intl/intl.dart";
-import 'gen/views/views.dart' as views;
+import 'gen/views/front/_views.dart' as views_front;
+import 'gen/views/admin/_views.dart' as views_admin;
 import "dao.dart";
 
 _now() {
@@ -42,11 +43,11 @@ initData() {
 
 index() {
     List topics = topicDao.listAll();
-    return views.index(topics);
+    return views_front.index(topics);
 }
 
 writePage() {
-    return views.writePage();
+    return views_admin.writePage();
 }
 
 write(String title, String content) {
@@ -63,11 +64,11 @@ write(String title, String content) {
 }
 
 oc() {
-    return views.oc();
+    return "not found";
 }
 
 show() {
-    return views.show();
+    return views_front.show();
 }
 
 login() {
@@ -76,7 +77,7 @@ login() {
         return req.session["userId"];
     }
 
-    return views.login();
+    return views_admin.login();
 }
 
 doLogin(String email, String password) {
