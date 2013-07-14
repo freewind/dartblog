@@ -11,8 +11,6 @@ var TEMPLATES = "lib/views";
 
 var TARGET = "lib/src/gen/views";
 
-var TARGET_LIBRARY = "lib";
-
 main() {
     var templates = new Directory(TEMPLATES);
     var compiler = new Compiler();
@@ -31,11 +29,11 @@ main() {
         }
     });
 
-    var libraryFile = new File("${TARGET_LIBRARY}/views.dart");
+    var libraryFile = new File("${TARGET}/views.dart");
     var sb = new StringBuffer();
-    sb.writeln("library views;");
+    sb.writeln("library _views;");
     templateNames.forEach((t) {
-        sb.writeln('part "src/gen/views/${t}";');
+        sb.writeln('part "${t}";');
     });
     libraryFile.writeAsStringSync(sb.toString());
 }

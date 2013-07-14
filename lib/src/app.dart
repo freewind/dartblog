@@ -1,8 +1,8 @@
-part of app;
+library _app;
 
-const PORT = 3000;
-
-var database = new Database("db/blog.db");
+import "gen/routes.dart";
+import "package:start/start.dart";
+import "globals.dart";
 
 void main() {
     start(public: 'web', port: PORT).then((Server app) {

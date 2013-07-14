@@ -1,4 +1,8 @@
-part of app;
+library _controllers;
+
+import "package:intl/intl.dart";
+import 'gen/views/views.dart' as views;
+import "dao.dart";
 
 _now() {
     return new DateFormat("yyyy-MM-dd HH:mm:ss").format(new DateTime.now());
@@ -47,11 +51,14 @@ writePage() {
 
 write(String title, String content) {
     Topic topic = topicDao.newModel();
+    print("### new topic");
     topic.title = title.trim();
     topic.content = content.trim();
     topic.categoryId = "23423";
     topic.createdAt = _now();
+    print("### going to save");
     topic.save();
+    print("### saved");
     return "saved!";
 }
 

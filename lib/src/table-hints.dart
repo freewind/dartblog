@@ -1,4 +1,6 @@
-part of app;
+library _table_hints;
+
+import "model.dart";
 
 abstract class User implements Model {
 

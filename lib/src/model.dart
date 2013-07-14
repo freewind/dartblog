@@ -1,4 +1,9 @@
-part of app;
+library _model;
+
+import 'package:dart-sqlite/sqlite.dart';
+import 'dart:mirrors';
+import 'package:uuid/uuid.dart';
+import 'globals.dart';
 
 Map<String, List<String>> fieldNameMap = {
 };
@@ -28,7 +33,7 @@ class Model {
             var fieldNames = [];
             ClassMirror cm = reflectClass(hintClass);
             for (var member in cm.members.values) {
-                if (member is VariableMirror && !(member.isStatic)) {
+                if (member is VariableMirror && !member.isStatic) {
                     fieldNames.add(MirrorSystem.getName(member.simpleName));
                 }
             }

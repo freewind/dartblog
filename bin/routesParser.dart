@@ -25,7 +25,11 @@ main() {
 
         var sb = new StringBuffer();
         sb.write("""
-            part of app;
+            library _routes;
+
+            import "../globals.dart";
+            import "../controllers.dart";
+            import "dart:io";
 
             _getPostData(req, handler(postData)) {
                 req.input.transform(new StringDecoder()).toList().then((data) {

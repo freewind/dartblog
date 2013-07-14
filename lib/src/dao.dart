@@ -1,4 +1,9 @@
-part of app;
+library _dao;
+
+import 'package:dart-sqlite/sqlite.dart';
+import 'globals.dart';
+import 'table-hints.dart';
+import 'model.dart';
 
 var userDao = new UserDao();
 var topicDao = new TopicDao();
