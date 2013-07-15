@@ -1,6 +1,6 @@
 library _app;
 
-import "gen/routes.dart";
+import "../gen/routes.dart";
 import "package:start/start.dart";
 import "globals.dart";
 

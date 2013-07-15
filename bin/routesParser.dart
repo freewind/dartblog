@@ -1,35 +1,68 @@
-import 'package:petitparser/petitparser.dart';
 import 'dart:io';
+import 'package:petitparser/petitparser.dart';
+import 'package:pathos/path.dart' as path;
 import 'refParser.dart';
 
 File routesFile = new File("conf/routes");
 
-File targetRoutesFile = new File("lib/src/gen/routes.dart");
+File targetRoutesFile = new File("lib/gen/routes.dart");
 
-File controllerFile = new File("lib/src/controllers.dart");
+Directory controllersDir = new Directory("lib/src");
+
+const CTRL_LIB_NAME = "_controllers";
 
 main() {
     var routesContent = routesFile.readAsStringSync();
-    var rs = new RoutesParser().start().parse(routesContent);
+    var ruleRs = new RoutesParser().start().parse(routesContent);
 
-    if (rs is Failure) {
-        var lineCol = Token.lineAndColumnOf(rs.buffer, rs.position);
+    if (ruleRs is Failure) {
+        var lineCol = Token.lineAndColumnOf(ruleRs.buffer, ruleRs.position);
         var line = lineCol[0];
         var col = lineCol[1];
-        var errorLine = rs.buffer.split("\n")[line - 1];
+        var errorLine = ruleRs.buffer.split("\n")[line - 1];
         print("Invalid line: $errorLine");
     } else {
-        var content = controllerFile.readAsStringSync();
 
-        var defs = new ActionParser().start().parse(content).value;
+// libNameItems -> actionMethods
+        Map<File, List<String>> libItemMap = {
+        };
+        Map<File, List<MethodDef>> actionMap = {
+        };
+        var files = controllersDir.listSync(recursive: true, followLinks: false);
+        for (File file in files) {
+            print("### parse controller: $file");
+
+            var content = file.readAsStringSync();
+            var libParser = new LibraryParser();
+            var libRs = libParser.start().parse(content);
+            if (libRs is Success) {
+                print("### success");
+                List<String> names = libRs.value;
+                var defs = new ActionParser().start().parse(content).value;
+                libItemMap[file] = names;
+                actionMap[file] = defs;
+            }
+        }
+
+        importControllers() {
+// import "../src/controllers.dart";
+            return libItemMap.keys.map((k) {
+                var v = libItemMap[k];
+                print(k.path);
+                print(targetRoutesFile.path);
+                var relaPath = path.relative(k.path, from:targetRoutesFile.directory.path);
+                var asName = v.join(r"_$$_");
+                return "import '${relaPath}' as ${asName};";
+            }).join('\n');
+        }
 
         var sb = new StringBuffer();
         sb.write("""
             library _routes;
 
-            import "../globals.dart";
-            import "../controllers.dart";
             import "dart:io";
+            import "../src/globals.dart";
+            ${importControllers()}
 
             _getPostData(req, handler(postData)) {
                 req.input.transform(new StringDecoder()).toList().then((data) {
@@ -55,8 +88,26 @@ main() {
             routes(app) {
         """);
 
+        List<MethodDef> _findMethodDefsByRule(Rule rule) {
+            List<String> actions = [CTRL_LIB_NAME];
+            actions.addAll(rule.actions);
+            actions.removeLast();
+
+            var file = null;
+            for (File k in libItemMap.keys) {
+                var v = libItemMap[k];
+                if (actions.join(',') == v.join(',')) {
+                    file = k;
+                    break;
+                }
+            }
+            return file == null ? [] : actionMap[file];
+        }
+
         _params(Rule rule) {
-            var _list = defs.where((x) => x.name == rule.action).toList();
+            var defs = _findMethodDefsByRule(rule);
+            print("#### defs for rule: $defs");
+            var _list = defs.where((def) => def.name == rule.actions.last).toList();
             var mDef = null;
             if (_list.length >= 1) {
                 mDef = _list[0];
@@ -66,23 +117,28 @@ main() {
             }
         }
 
-        for (Rule rule in rs.value) {
-
+        for (Rule rule in ruleRs.value) {
+            _funcInvocation() {
+                var actions = [CTRL_LIB_NAME];
+                actions.addAll(rule.actions);
+                var funcName = actions.removeLast();
+                return "${actions.join(r'_$$_')}.$funcName";
+            }
             if (rule.httpMethod == "get") {
-                sb.write("""
+                sb.writeln("""
                 app.${rule.httpMethod}('${rule.path}').listen((req) {
                     request = req;
                     var postData = {};
-                    var s = ${rule.action}(${_params(rule)});
+                    var s = ${_funcInvocation()}(${_params(rule)});
                     req.response.send(s);
                 });
                 """);
             } else if (rule.httpMethod == "post") {
-                sb.write("""
+                sb.writeln("""
                 app.${rule.httpMethod}('${rule.path}').listen((req) {
                     request = req;
                     _getPostData(req, (postData) {
-                        var s = ${rule.action}(${_params(rule)});
+                        var s = ${_funcInvocation()}(${_params(rule)});
                         req.response.send(s);
                     });
                 });
@@ -90,7 +146,26 @@ main() {
             }
         }
 
-        sb.write("}");
+// more
+        for (File file in libItemMap.keys) {
+            List<String> libItems = libItemMap[file];
+            List<MethodDef> mDefs = actionMap[file];
+            print(mDefs);
+            for (var def in mDefs.where((m) => m.params.isEmpty)) {
+                List<String> pathItems = _copyList(libItems);
+                pathItems.add(def.name);
+                pathItems.removeAt(0);
+
+                sb.writeln("""
+                app.get('/${pathItems.join("/")}').listen((req) {
+                  var s = ${libItems.join(r'_$$_')}.${def.name}();
+                  req.response.send(s);
+                });
+                """);
+            }
+        }
+
+        sb.writeln("}");
         targetRoutesFile.writeAsStringSync(sb.toString());
         print("wrote to file: $targetRoutesFile");
     }
@@ -110,14 +185,16 @@ class RoutesParser {
     line() => (
         ref(httpMethod).flatten().trimInLine()
         & ref(path).flatten().trimInLine()
-        & ref(action).flatten().trimInLine()
-    ).map((each) => new Rule(each[0],each[1],each[2]));
+        & ref(actions).trimInLine()
+    ).map((each) => new Rule(each[0], each[1], each[2]));
 
     httpMethod() => string("*") | string("get") | string("post");
 
     path() => whitespace().neg().plus();
 
-    action() => word().plus();
+    actions() => (
+        word().plus().flatten().separatedBy(char('.'), includeSeparators: false)
+    );
 
     commentLine() => (
         char('#') & char('\n').neg().star()
@@ -133,15 +210,15 @@ class Rule {
 
     String path;
 
-    String action;
+    List<String> actions;
 
-    Rule(this.httpMethod, this.path, this.action);
+    Rule(this.httpMethod, this.path, this.actions);
 
 }
 
 
 class ActionParser {
-    start() => (ref(methodDef) | any()).star().map((each) => each.where((x) => x is MethodDef).toList());
+    start() => (ref(methodDef) | any()).star().map((each) => each.where((x) => x is MethodDef && !x.name.startsWith('_')).toList());
 
     methodDef() => (
         word().plus().flatten()
@@ -151,6 +228,7 @@ class ActionParser {
             & word().plus().flatten().trim()
         ).separatedBy(char(','), includeSeparators:false).optional([])
         & char(')')
+        & char('{').trim()
     ).permute([0, 2])
     .map((each) {
         var map = {
@@ -170,4 +248,34 @@ class MethodDef {
     Map<String, String> params;
 
     MethodDef(this.name, this.params);
+
+    toString() => "$name($params)";
+}
+
+
+class LibraryParser {
+    start() => (
+        string("library").flatten().trim()
+        & string(CTRL_LIB_NAME)
+        & (
+            char('.').trim()
+            & ref(name).separatedBy(char('.').trim(), includeSeparators:false)
+        ).pick(1).optional([])
+        & char(';')
+    ).permute([1, 2])
+    .map((each) {
+        var names = [each[0]];
+        names.addAll(each[1]);
+        print("### names: $names");
+        return names;
+    });
+
+    name() => word().plus().flatten();
+}
+
+
+_copyList(List list) {
+    var newList = [];
+    newList.addAll(list);
+    return newList;
 }

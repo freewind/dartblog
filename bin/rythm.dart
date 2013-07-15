@@ -5,7 +5,7 @@ import 'package:pathos/path.dart' as path;
 
 String TEMPLATES = "lib/views";
 
-String TARGET = "lib/src/gen/views";
+String TARGET = "lib/gen/views";
 
 String rootLib = "_views";
 

@@ -1,8 +1,8 @@
 get     /             index
-get     /write        writePage
-post    /write        write
-get     /initData     initData
+get     /write        admin.writePage
+post    /write        admin.write
+get     /initData     admin.initData
 get     /oc           oc
 get     /show/:id     show
-get     /login        login
-post    /login        doLogin
+get     /login        admin.login
+post    /login        admin.doLogin

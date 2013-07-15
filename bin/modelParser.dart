@@ -4,7 +4,7 @@ import 'refParser.dart';
 
 var MODEL_FILE = new File("lib/src/models.dart");
 
-var TARGET_FILE = new File("lib/src/gen/dao.dart");
+var TARGET_FILE = new File("lib/gen/dao.dart");
 
 main() {
     var content = MODEL_FILE.readAsStringSync();
