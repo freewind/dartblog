@@ -1,19 +1,17 @@
 library _app;
 
-import "../gen/routes.dart";
 import "package:start/start.dart";
 import "globals.dart";
+import "controllers.dart" as ctrl;
 
 void main() {
     start(public: 'web', port: PORT).then((Server app) {
 
-        routes(app);
+        app.get('/').listen(ctrl.index);
+        app.get('/write').listen(ctrl.writePage);
+        app.post('/write').listen(ctrl.write);
 
-        app.get('/public/{<.*>path}').listen((Request req) {
-        });
-
-        app.get('/topic/:id').listen((Request req) {
-        });
+        app.get('/topic/:id').listen(ctrl.topic);
 
         app.get('/hello/:name.:lastname?').listen((request) {
             request.response
