@@ -1,5 +1,4 @@
 kill -9 `lsof -i tcp:3000 | grep 'dart' | awk '{print $2}'`
-dart --package-root=packages/ --checked bin/routesParser.dart
 dart --package-root=packages/ --checked bin/rythm.dart
 dart --package-root=packages/ lib/src/app.dart
 
