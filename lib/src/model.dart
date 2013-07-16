@@ -4,6 +4,7 @@ import 'package:dart-sqlite/sqlite.dart';
 import 'dart:mirrors';
 import 'package:uuid/uuid.dart';
 import 'globals.dart';
+import 'helper.dart';
 
 Map<String, List<String>> fieldNameMap = {
 };
@@ -57,7 +58,7 @@ class Model {
     }
 
     Model insert() {
-        fields['id'] = new Uuid().v4();
+        fields['id'] = newId();
         var sql = """
             insert into $table (${fieldNames.join(', ')})
             values (${fieldNames.map((_) => '?').join(', ')})
