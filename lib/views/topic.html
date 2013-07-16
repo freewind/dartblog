@@ -1,0 +1,19 @@
+@extends front
+@params Topic topic
+
+<article>
+    <header>
+        <h1 class="entry-title">
+            <a href="/topic/@topic.id">@topic.title</a>
+        </h1>
+        <p class="meta">
+            <time datetime="@topic.createdAt" pubdate="" data-updated="true">@topic.createdAt</time>
+            • <a rel="bookmark" href="/topic/@topic.id">∞</a>
+        </p>
+    </header>
+    <div class="entry-content">
+        @topic.content
+    </div>
+    <footer>
+    </footer>
+</article>
