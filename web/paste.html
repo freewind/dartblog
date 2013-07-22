@@ -1,105 +1,26 @@
-@extends admin
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
 
-<form method="post" action="/write">
-    <input type="text" name="title"/>
-    <textarea id="content" name="content"></textarea>
-    <button>提交</button>
-</form>
-
-<form id="uploadForm" enctype="multipart/form-data">
-    <input name="file" type="file"/>
-    <input type="button" value="Upload a file"/>
-</form>
-
-<hr/>
-
-<div id="preview">
-
-</div>
-
+<!-- normally you wouldn't show this -->
 <div id="paste" contenteditable="true"></div>
+<input type="text" value="xxx" />
 <script type="text/javascript">
     $(function () {
-        var $content = $('#content');
         $.imagePaste(function (file) {
             console.log(file);
             $.post('/pasteImage', {
                 file: file.dataURL
-            }, function (imgUrl) {
-                $content.insertAtCaret("\n\n![img](" + imgUrl + ")\n\n");
-                $content.change();
+            }, function(res) {
+                alert(res);
             })
-        });
-
-        $content.on("keypress change blur keyup", function () {
-            $('#preview').html(marked($content.val()));
-        });
-        $content.on("paste", function (event) {
-            console.log("pasting!");
-            console.dir(event);
-        });
-
-        //
-        var uploadingFile = null;
-
-        $('#uploadForm :file').change(function (event) {
-            var file = event.target.files[0];
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                uploadingFile = {
-                    filename: file.name,
-                    data: event.target.result
-                };
-            };
-            reader.readAsDataURL(file);
-        });
-
-        $("#uploadForm :button").click(function (event) {
-            $.ajax({url: "/upload",
-                type: 'POST',
-                data: uploadingFile,
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    if (data.isImage) {
-                        $content.insertAtCaret("\n\n![img](" + data.url + ")\n\n");
-                    } else {
-                        $content.insertAtCaret("\n\n[file](" + data.url + ")\n\n");
-                    }
-                    $content.change();
-                }
-            });
         });
     });
 </script>
 <script type='text/javascript'>
-    jQuery.fn.extend({
-        insertAtCaret: function (myValue) {
-            return this.each(function (i) {
-                if (document.selection) {
-                    //For browsers like Internet Explorer
-                    this.focus();
-                    var sel = document.selection.createRange();
-                    sel.text = myValue;
-                    this.focus();
-                }
-                else if (this.selectionStart || this.selectionStart == '0') {
-                    //For browsers like Firefox and Webkit based
-                    var startPos = this.selectionStart;
-                    var endPos = this.selectionEnd;
-                    var scrollTop = this.scrollTop;
-                    this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
-                    this.focus();
-                    this.selectionStart = startPos + myValue.length;
-                    this.selectionEnd = startPos + myValue.length;
-                    this.scrollTop = scrollTop;
-                } else {
-                    this.value += myValue;
-                    this.focus();
-                }
-            });
-        }
-    });
     (function ($) {
         function match() {
             var ua = navigator.userAgent.toLowerCase();
@@ -248,7 +169,7 @@
                 } else {
                     pasteDiv.innerHTML = "";
                 }
-            }
+            };
 
             function handlePaste(event, pasteDiv) {
                 if (event && event.clipboardData && event.clipboardData.getData) {
@@ -271,3 +192,5 @@
         }
     })(jQuery);
 </script>
+</body>
+</html>

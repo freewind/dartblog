@@ -16,3 +16,5 @@ dependencies:
   uuid: any
   intl: any
   pathos: any
+  base64_codec: any
+  crypto: any

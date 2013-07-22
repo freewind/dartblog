@@ -58,7 +58,7 @@ class Model {
     }
 
     Model insert() {
-        fields['id'] = newId();
+        fields['id'] = nextId();
         var sql = """
             insert into $table (${fieldNames.join(', ')})
             values (${fieldNames.map((_) => '?').join(', ')})

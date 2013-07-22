@@ -36,6 +36,7 @@
 				}
 			},
 			execCommand = function (commandWithArgs, valueArg) {
+                console.log("exec: " + commandWithArgs + " ,,, " + valueArg);
 				var commandArr = commandWithArgs.split(' '),
 					command = commandArr.shift(),
 					args = commandArr.join(' ') + (valueArg || '');
@@ -111,8 +112,9 @@
 				});
 				toolbar.find('[data-toggle=dropdown]').click(restoreSelection);
 
-				toolbar.find('input[type=text][data-' + options.commandRole + ']').on('webkitspeechchange change', function () {
+				toolbar.find('textarea,input[type=text][data-' + options.commandRole + ']').on('webkitspeechchange change', function () {
 					var newValue = this.value; /* ugly but prevents fake double-calls due to selection restoration */
+                    newValue = $(this).data('wrap-start') + newValue + $(this).data('wrap-end');
 					this.value = '';
 					restoreSelection();
 					if (newValue) {

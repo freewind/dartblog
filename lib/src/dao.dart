@@ -6,36 +6,49 @@ import 'table-hints.dart';
 import 'model.dart';
 
 var userDao = new UserDao();
+
 var topicDao = new TopicDao();
+
 var categoryDao = new CategoryDao();
+
 var linkDao = new LinkDao();
+
 var tagDao = new TagDao();
+
 var configDao = new ConfigDao();
+
 var pageDao = new PageDao();
+
 var commentDao = new CommentDao();
 
 class CommentDao extends Dao {
-    CommentDao(): super(Comment) {}
+    CommentDao(): super(Comment) {
+    }
 }
 
 class PageDao extends Dao {
-    PageDao(): super(Page){}
+    PageDao(): super(Page) {
+    }
 }
 
 class ConfigDao extends Dao {
-    ConfigDao():super(Config){}
+    ConfigDao():super(Config) {
+    }
 }
 
 class TagDao extends Dao {
-    TagDao():super(Tag) {}
+    TagDao():super(Tag) {
+    }
 }
 
 class LinkDao extends Dao {
-    LinkDao():super(Link) {}
+    LinkDao():super(Link) {
+    }
 }
 
 class CategoryDao extends Dao {
-    CategoryDao():super(Category) {}
+    CategoryDao():super(Category) {
+    }
 }
 
 class UserDao extends Dao {
@@ -66,9 +79,9 @@ class Dao {
         return database.first(sql, [id]);
     }
 
-    List listAll() {
+    List listAll([orderBy="createdAt desc"]) {
         var sql = """
-            select * from $table order by createdAt desc
+            select * from $table order by $orderBy
         """;
         var list = [];
         database.execute(sql, [], (row) {
@@ -86,6 +99,13 @@ class Dao {
             list.add(new Model.fromRow(hintClass, row));
         });
         return list;
+    }
+
+    bool deleteById(String id) {
+        var sql = """
+            delete from $table where id=?
+        """;
+        return database.execute(sql, [id]) == 1;
     }
 
 }

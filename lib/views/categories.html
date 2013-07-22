@@ -1,5 +1,18 @@
 @extends admin
+@params List categories
 
 <div>
-    xxx
+    <ul>
+        @for(var category in categories) {
+        <li>@category.name
+            [<a href="/admin/deleteCategory?id=@category.id" onclick="return confirm('delete?')">x</a>]
+        </li>
+        }
+    </ul>
+    <hr/>
+    <form action="/admin/createCategory" method="post">
+        <label>New Category</label>
+        <input type="text" name="name"/>
+        <input type="submit" value="提交"/>
+    </form>
 </div>

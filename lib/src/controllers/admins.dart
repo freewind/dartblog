@@ -1,38 +1,30 @@
 part of _controllers;
 
 initData(Request req) {
-    var t = topicDao.newModel();
-    t.title = "Hello";
-    t.content = "Dart";
-    t.categoryId = "23423";
-    t.createdAt = _now();
-    t.save();
+    Category category = categoryDao.newModel();
+    category.name = "Scala";
+    category.save();
 
-    t = topicDao.newModel();
-    t.title = "Hello3 423";
-    t.content = "Dart dfdsfd";
-    t.categoryId = "23423";
-    t.createdAt = _now();
-    t.save();
+    category = categoryDao.newModel();
+    category.name = "Java";
+    category.save();
 
-    t = topicDao.newModel();
-    t.title = "Hello fgg ";
-    t.content = "Dart dfgdfg";
-    t.categoryId = "23423";
-    t.createdAt = _now();
-    t.save();
+    category = categoryDao.newModel();
+    category.name = "Dart";
+    category.save();
 
-    var user = userDao.newModel();
-    user.email = "aaa@aaa.com";
-    user.password = "aaa";
-    user.name = "AAA";
-    user.salt = "123";
-    user.save();
+    category = categoryDao.newModel();
+    category.name = "其它语言";
+    category.save();
+
+    category = categoryDao.newModel();
+    category.name = "未分类";
+    category.save();
 
     req.response.send("ok");
 }
 
-login(Request req) {
+adminLogin(Request req) {
     HttpRequest req = request.input;
     if (req.session.containsKey("userId")) {
         req.response.send(req.session["userId"]);
@@ -41,7 +33,7 @@ login(Request req) {
     req.response.send(views.login());
 }
 
-doLogin(Request req) {
+adminDoLogin(Request req) {
     _getPostData(req, (postData) {
         String email = postData['email'], password = postData['password'];
         var rs = userDao.findBy("email=? and password=?", [email, password]);
@@ -72,6 +64,25 @@ write(Request req) {
     });
 }
 
-categories(Request req) {
-    req.response.send(views.categories());
+adminCategories(Request req) {
+    var categories = categoryDao.listAll("displayOrder desc");
+    print("### categories: $categories");
+    req.response.send(views.categories(categories));
 }
+
+adminDeleteCategory(req) {
+    var id = req.param("id");
+    categoryDao.deleteById(id);
+    adminCategories(req);
+}
+
+adminCreateCategory(req) {
+    _getPostData(req, (postData) {
+        var name = postData["name"];
+        var category = categoryDao.newModel();
+        category.name = name;
+        category.save();
+        adminCategories(req);
+    });
+}
+

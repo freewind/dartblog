@@ -8,10 +8,17 @@ void main() {
     start(public: 'web', port: PORT).then((Server app) {
 
         app.get('/').listen(ctrl.index);
+        app.get('/initData').listen(ctrl.initData);
         app.get('/write').listen(ctrl.writePage);
-        app.post('/write').listen(ctrl.write);
-
         app.get('/topic/:id').listen(ctrl.topic);
+        app.post('/write').listen(ctrl.write);
+        app.get('/admin/login').listen(ctrl.adminLogin);
+        app.post('/admin/login').listen(ctrl.adminDoLogin);
+        app.get('/admin/categories').listen(ctrl.adminCategories);
+        app.get('/admin/deleteCategory').listen(ctrl.adminDeleteCategory);
+        app.post('/admin/createCategory').listen(ctrl.adminCreateCategory);
+        app.post('/pasteImage').listen(ctrl.pasteImage);
+        app.post('/upload').listen(ctrl.uploadFile);
 
         app.get('/hello/:name.:lastname?').listen((request) {
             request.response

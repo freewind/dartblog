@@ -14,3 +14,8 @@ topic(Request req) {
 fix(Request req) {
     req.response.send("OK");
 }
+
+todo(Request req) {
+    req.response.send("TODO");
+}
+
