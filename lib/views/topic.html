@@ -1,5 +1,5 @@
 @extends front
-@params Topic topic
+@params Topic topic, Category category
 
 <article>
     <header>
@@ -9,6 +9,8 @@
         <p class="meta">
             <time datetime="@topic.createdAt" pubdate="" data-updated="true">@topic.createdAt</time>
             • <a rel="bookmark" href="/topic/@topic.id">∞</a>
+            分类：<span>[@category.name]</span>
+            标签：<span>@topic.tags</span>
         </p>
     </header>
     <div class="entry-content">

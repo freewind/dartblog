@@ -48,16 +48,22 @@ adminDoLogin(Request req) {
 }
 
 writePage(Request req) {
-    req.response.send(views.writePage());
+    var categories = categoryDao.listAll("name asc");
+    req.response.send(views.writePage(categories));
 }
 
 write(Request req) {
     _getPostData(req, (postData) {
-        String title = postData['title'], content = postData['content'];
+        String title = postData['title'],
+        content = postData['content'],
+        tags = postData['tags'],
+        categoryId = postData['categoryId'];
+
         Topic topic = topicDao.newModel();
         topic.title = title.trim();
         topic.content = content.trim();
-        topic.categoryId = "23423";
+        topic.categoryId = categoryId;
+        topic.tags = tags;
         topic.createdAt = _now();
         topic.save();
         req.response.send("saved!");

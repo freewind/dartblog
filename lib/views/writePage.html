@@ -1,14 +1,31 @@
 @extends admin
+@params List categories
 
 <form method="post" action="/write">
-    <input type="text" name="title"/>
-    <textarea id="content" name="content"></textarea>
+    <div>
+        @for(var category in categories) {
+        <span>
+        <input type="radio" name="categoryId" value="@category.id"/>
+            @category.name
+        </span>
+        }
+    </div>
+    <div>
+        <input type="text" name="title"/>
+    </div>
+    <div>
+        <textarea id="content" name="content"></textarea>
+    </div>
+    <div>
+        <label>Tags: </label>
+        <input type="text" name="tags"/>
+    </div>
     <button>提交</button>
 </form>
 
 <form id="uploadForm" enctype="multipart/form-data">
+    <label>upload a image or file: </label>
     <input name="file" type="file"/>
-    <input type="button" value="Upload a file"/>
 </form>
 
 <hr/>
@@ -39,10 +56,8 @@
             console.dir(event);
         });
 
-        //
-        var uploadingFile = null;
-
         $('#uploadForm :file').change(function (event) {
+            var uploadingFile = null;
             var file = event.target.files[0];
             var reader = new FileReader();
             reader.onload = function (event) {
@@ -50,25 +65,23 @@
                     filename: file.name,
                     data: event.target.result
                 };
+                $.ajax({url: "/upload",
+                    type: 'POST',
+                    data: uploadingFile,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.isImage) {
+                            $content.insertAtCaret("\n\n![img](" + data.url + ")\n\n");
+                        } else {
+                            $content.insertAtCaret("\n\n[file](" + data.url + ")\n\n");
+                        }
+                        $content.change();
+                    }
+                });
             };
             reader.readAsDataURL(file);
-        });
 
-        $("#uploadForm :button").click(function (event) {
-            $.ajax({url: "/upload",
-                type: 'POST',
-                data: uploadingFile,
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    if (data.isImage) {
-                        $content.insertAtCaret("\n\n![img](" + data.url + ")\n\n");
-                    } else {
-                        $content.insertAtCaret("\n\n[file](" + data.url + ")\n\n");
-                    }
-                    $content.change();
-                }
-            });
         });
     });
 </script>

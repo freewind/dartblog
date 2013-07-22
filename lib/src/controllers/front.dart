@@ -8,7 +8,11 @@ index(Request req) {
 topic(Request req) {
     String id = req.param("id");
     Topic topic = topicDao.get(id);
-    req.response.send(views.topic(topic));
+    Category category = null;
+    if (topic.categoryId.isNotEmpty) {
+        category = categoryDao.get(topic.categoryId);
+    }
+    req.response.send(views.topic(topic, category));
 }
 
 fix(Request req) {
