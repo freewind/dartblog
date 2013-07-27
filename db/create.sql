@@ -11,7 +11,7 @@ CREATE TABLE Config (
   code         text NOT NULL UNIQUE,
   value        text,
   desc         text,
-  displayOrder int DEFAULT 0
+  displayOrder int
 );
 
 CREATE TABLE Page (
@@ -19,53 +19,53 @@ CREATE TABLE Page (
   name         text NOT NULL UNIQUE,
   title        text,
   content      text,
-  displayOrder text DEFAULT 0
+  displayOrder text
 );
 
 CREATE TABLE Category (
   id           text PRIMARY KEY,
   name         text NOT NULL,
-  displayOrder int DEFAULT 0,
-  topicCount   int DEFAULT 0
+  displayOrder int,
+  topicCount   int
 );
 
 CREATE TABLE Topic (
   id           text PRIMARY KEY,
-  title        text      NOT NULL,
+  title        text NOT NULL,
   content      text,
-  categoryId   text      NOT NULL,
-  createdAt    timestamp NOT NULL,
-  updatedAt    timestamp,
+  categoryId   text NOT NULL,
+  createdAt    int  NOT NULL,
+  updatedAt    int,
   tags         text,
-  state        text DEFAULT 'normal',
-  viewCount    int DEFAULT 0,
-  commentCount int DEFAULT 0
+  state        text,
+  viewCount    int,
+  commentCount int
 );
 
 CREATE TABLE Tag (
   id         text PRIMARY KEY,
   name       text NOT NULL UNIQUE,
-  topicCount int DEFAULT 0
+  topicCount int
 );
 
 CREATE TABLE Comment (
   id              text PRIMARY KEY,
-  topicId         text      NOT NULL,
+  topicId         text NOT NULL,
   parentCommentId text,
-  content         text      NOT NULL,
-  username        text      NOT NULL,
+  content         text NOT NULL,
+  username        text NOT NULL,
   email           text,
   website         text,
-  createdAt       timestamp NOT NULL,
-  updatedAt       timestamp,
-  state           boolean DEFAULT 'checking'
+  createdAt       int  NOT NULL,
+  updatedAt       int,
+  state           String
 );
 
 CREATE TABLE Link (
   id           text PRIMARY KEY,
   link         text NOT NULL,
   name         text NOT NULL,
-  displayOrder text DEFAULT 0
+  displayOrder text
 )
 
 
