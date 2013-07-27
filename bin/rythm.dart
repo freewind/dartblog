@@ -7,9 +7,11 @@ String TEMPLATES = "lib/views";
 
 String TARGET = "lib/gen/views";
 
-String rootLib = "_views";
+String ROOT_LIB = "_views";
 
 const LIB_SEP = r"_$$_";
+
+const PREDEF_FILE = "_views_predef.txt";
 
 main() {
     var templatesDir = new Directory(TEMPLATES);
@@ -37,7 +39,7 @@ main() {
             print("found file: $f");
             if (f is File && f.path.endsWith(".html")) {
                 print("compiling: ${f}");
-                String dart = compiler.compile(f, rootLib, LIB_SEP, relatives);
+                String dart = compiler.compile(f, ROOT_LIB, LIB_SEP, relatives);
                 print(dart);
 
                 var targetFileName = "${path.basenameWithoutExtension(f.path)}.dart";
@@ -61,17 +63,23 @@ writeToLibrary(List<String> relatives, List<String> templateNames, List<List<Str
     var sb = new StringBuffer();
 
 // library
-    var libItems = [rootLib];
+    var libItems = [ROOT_LIB];
     libItems.addAll(relatives.where((i) => i != "."));
     sb.writeln("library ${libItems.join('.')};");
 
 // import other view libraries
+    var predefFile = new File(path.join(TEMPLATES, PREDEF_FILE));
+    if (predefFile.existsSync()) {
+        var content = predefFile.readAsStringSync();
+        sb.writeln(content);
+    }
+
 // God ~, [1] != [1] in Dart!
     libraries.where((ll) => ll.join(',') != relatives.join(',')).forEach((ll) {
         var importingLibPath = path.join(TARGET, path.joinAll(ll), "_views.dart");
         importingLibPath = path.relative(importingLibPath, from: targetLibFile.directory.path);
 
-        var items = [rootLib];
+        var items = [ROOT_LIB];
         print(">>> items: $items");
         print(">>> ll: $ll");
 
