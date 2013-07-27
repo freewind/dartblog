@@ -1,8 +1,8 @@
-library _table_hints;
+library _models;
 
-import "model.dart";
+import "orm.dart";
 
-abstract class User implements Model {
+class User extends Model {
 
     String id;
 
@@ -17,7 +17,7 @@ abstract class User implements Model {
 }
 
 
-abstract class Config implements Model {
+class Config extends Model {
 
     String id;
 
@@ -32,7 +32,7 @@ abstract class Config implements Model {
 }
 
 
-abstract class Page implements Model {
+class Page extends Model {
 
     String id;
 
@@ -48,7 +48,7 @@ abstract class Page implements Model {
 }
 
 
-abstract class Category implements Model {
+class Category extends Model {
 
     String id;
 
@@ -61,7 +61,7 @@ abstract class Category implements Model {
 }
 
 
-abstract class Topic implements Model {
+class Topic extends Model {
 
     String id;
 
@@ -71,9 +71,9 @@ abstract class Topic implements Model {
 
     String categoryId;
 
-    String createdAt;
+    int createdAt = new DateTime.now().millisecondsSinceEpoch;
 
-    String updatedAt;
+    int updatedAt;
 
     String tags;
 
@@ -83,10 +83,14 @@ abstract class Topic implements Model {
 
     int commentCount;
 
+    preUpdate() {
+        this.updatedAt = new DateTime.now().millisecondsSinceEpoch;
+    }
+
 }
 
 
-abstract class Tag implements Model {
+class Tag extends Model {
 
     String id;
 
@@ -97,7 +101,7 @@ abstract class Tag implements Model {
 }
 
 
-abstract class Comment implements Model {
+class Comment extends Model {
 
     String id;
 
@@ -113,16 +117,16 @@ abstract class Comment implements Model {
 
     String website;
 
-    String createdAt;
+    int createdAt = new DateTime.now().millisecondsSinceEpoch;
 
-    String updatedAt;
+    int updatedAt;
 
     String state;
 
 }
 
 
-abstract class Link implements Model {
+class Link extends Model {
 
     String id;
 

@@ -1,111 +1,45 @@
 library _dao;
 
-import 'package:dart-sqlite/sqlite.dart';
-import 'globals.dart';
-import 'table-hints.dart';
-import 'model.dart';
+import "models.dart";
+import "orm.dart";
 
-var userDao = new UserDao();
 
-var topicDao = new TopicDao();
-
-var categoryDao = new CategoryDao();
-
-var linkDao = new LinkDao();
-
-var tagDao = new TagDao();
-
-var configDao = new ConfigDao();
-
-var pageDao = new PageDao();
-
-var commentDao = new CommentDao();
-
-class CommentDao extends Dao {
-    CommentDao(): super(Comment) {
-    }
+class CommentDao extends Dao<Comment> {
 }
 
-class PageDao extends Dao {
-    PageDao(): super(Page) {
-    }
+class PageDao extends Dao<Page> {
 }
 
-class ConfigDao extends Dao {
-    ConfigDao():super(Config) {
-    }
+class ConfigDao extends Dao<Config> {
 }
 
-class TagDao extends Dao {
-    TagDao():super(Tag) {
-    }
+class TagDao extends Dao<Tag> {
 }
 
-class LinkDao extends Dao {
-    LinkDao():super(Link) {
-    }
+class LinkDao extends Dao<Link> {
 }
 
-class CategoryDao extends Dao {
-    CategoryDao():super(Category) {
-    }
+class CategoryDao extends Dao<Category> {
 }
 
-class UserDao extends Dao {
-    UserDao():super(User) {
-    }
+class UserDao extends Dao<User> {
 }
 
-
-class TopicDao extends Dao {
-    TopicDao():super(Topic) {
-    }
+class TopicDao extends Dao<Topic> {
 }
 
-class Dao {
+UserDao userDao = new UserDao();
 
-    Type hintClass;
+TopicDao topicDao = new TopicDao();
 
-    String get table => hintClass.toString();
+CategoryDao categoryDao = new CategoryDao();
 
-    Dao(this.hintClass);
+LinkDao linkDao = new LinkDao();
 
-    newModel() {
-        return new Model(hintClass);
-    }
+TagDao tagDao = new TagDao();
 
-    get(id) {
-        var sql = "select * from $table where id=?";
-        return database.first(sql, [id]);
-    }
+ConfigDao configDao = new ConfigDao();
 
-    List listAll([orderBy="createdAt desc"]) {
-        var sql = """
-            select * from $table order by $orderBy
-        """;
-        var list = [];
-        database.execute(sql, [], (row) {
-            list.add(new Model.fromRow(hintClass, row));
-        });
-        return list;
-    }
+PageDao pageDao = new PageDao();
 
-    List findBy(String condition, List params) {
-        var sql = """
-            select * from $table where $condition
-        """;
-        var list = [];
-        database.execute(sql, params, (row) {
-            list.add(new Model.fromRow(hintClass, row));
-        });
-        return list;
-    }
-
-    bool deleteById(String id) {
-        var sql = """
-            delete from $table where id=?
-        """;
-        return database.execute(sql, [id]) == 1;
-    }
-
-}
+CommentDao commentDao = new CommentDao();
