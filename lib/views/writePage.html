@@ -1,26 +1,32 @@
 @extends admin
-@params List categories
+@params List categories, Topic topic
 
 <form method="post" action="/write">
-    <div>
-        @for(var category in categories) {
-        <span>
-        <input type="radio" name="categoryId" value="@category.id"/>
-            @category.name
-        </span>
-        }
-    </div>
-    <div>
-        <input type="text" name="title"/>
-    </div>
-    <div>
-        <textarea id="content" name="content"></textarea>
-    </div>
-    <div>
-        <label>Tags: </label>
-        <input type="text" name="tags"/>
-    </div>
-    <button>提交</button>
+    <fieldset>
+        <input type="hidden" name="id" value="@topic.id" />
+        <div>
+            <label>标题</label>
+            <input type="text" name="title" class="input-xxlarge" value="@topic.title" />
+        </div>
+        <div>
+            <label>内容</label>
+            <textarea rows="20" class="input-xxlarge" id="content" name="content">@topic.content</textarea>
+            <span class="help-block">使用markdown，可粘贴图片</span>
+        </div>
+        <div>
+            <label>Tags: </label>
+            <input type="text" name="tags" class="input-xlarge" value="@topic.tags"/>
+        </div>
+        <div class="control-group">
+            @for(var category in categories) {
+            <span>
+                <input type="radio" name="categoryId" value="@category.id"
+                        @{topic!=null&&category.id==topic.categoryId?"checked":""} /> @category.name
+            </span>
+            }
+        </div>
+        <button>提交</button>
+    </fieldset>
 </form>
 
 <form id="uploadForm" enctype="multipart/form-data">

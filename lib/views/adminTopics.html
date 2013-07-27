@@ -1,0 +1,14 @@
+@extends admin
+@params List topics
+
+<ul>
+    @for(var topic in topics) {
+    <li>
+        <a href="/topic/@topic.id">@topic.title</a>
+        <span>
+            <a href="/admin/editTopic/@topic.id">[edit]</a>
+            <a href="/admin/deleteTopic/@topic.id" onclick="return confirm('Are you sure?')">[delete]</a>
+        </span>
+    </li>
+    }
+</ul>

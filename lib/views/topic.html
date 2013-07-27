@@ -1,6 +1,12 @@
 @extends front
 @params Topic topic, Category category
 
+<script>
+    $(document).ready(function(){
+        var $div = $('.entry-content');
+        $div.html(marked($div.html()));
+    });
+</script>
 <article>
     <header>
         <h1 class="entry-title">
@@ -9,7 +15,9 @@
         <p class="meta">
             <time datetime="@topic.createdAt" pubdate="" data-updated="true">@topic.createdAt</time>
             • <a rel="bookmark" href="/topic/@topic.id">∞</a>
+            @if(category!=null) {
             分类：<span>[@category.name]</span>
+            }
             标签：<span>@topic.tags</span>
         </p>
     </header>

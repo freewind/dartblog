@@ -1,43 +1,36 @@
 @extends front
 @params List topics
 
+<script>
+    $(document).ready(function () {
+        var $div = $('.entry-content');
+        $div.html(marked($div.html()));
+    });
+</script>
 <div class="blog-index">
 
     @for(var topic in topics) {
     <article>
-
         <header>
             <h1 class="entry-title">
-
                 <a href="/topic/@topic.id">@topic.title</a>
-
             </h1>
 
-
             <p class="meta">
-
-
                 <time datetime="2011-07-23T18:05:00-05:00" pubdate="" data-updated="true">Jul 23<span>rd</span>,
                     2011
                 </time>
                 • <a rel="bookmark" href="http://octopress.org/blog/2011/07/23/octopress-20-surfaces/">∞</a>
             </p>
-
         </header>
-
-        <div class="entry-content">
-            @topic.content
-        </div>
-
+        @if(topic_isFirst) {
+        <div class="entry-content">@topic.content</div>
+        }
         <footer>
-
-
         </footer>
-
-
     </article>
-
     }
+
     <div class="pagination">
 
         <a href="http://octopress.org/archives">Blog Archives</a>

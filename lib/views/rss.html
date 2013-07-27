@@ -1,0 +1,22 @@
+@params String title, String url, String description, String lastBuildDate, List items
+<rss version="0.92">
+    <channel>
+        <title>@title</title>
+        <link>@url</link>
+        <description>@description</description>
+        <lastBuildDate>@lastBuildDate</lastBuildDate>
+        <docs>http://backend.userland.com/rss092</docs>
+        <language>en</language>
+        @for(var item in items) {
+        <item>
+            <title>@{item["title"]}</title>
+            <description>
+                <![CDATA[
+                @{item["content"]}
+                ]]>
+            </description>
+            <link>@{item["url"]}</link>
+        </item>
+        }
+    </channel>
+</rss>
