@@ -51,8 +51,8 @@ fix(Request req) {
     User user = new User();
     user.email = "nowind_lee@qq.com";
     user.name = "Freewind";
-    user.password = password;
     user.salt = nextId();
+    user.password = password + user.salt;
     user.insert();
     req.response.send("OK");
 }
