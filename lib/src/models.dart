@@ -1,6 +1,7 @@
 library _models;
 
 import "orm.dart";
+import "dao.dart";
 
 class User extends Model {
 
@@ -61,6 +62,15 @@ class Category extends Model {
 
     int topicCount;
 
+    List<Topic> _topics;
+
+    List<Topic> get topics {
+        if (_topics == null) {
+            _topics = topicDao.findBy("categoryId=? order by createdAt desc", [id]);
+        }
+        return _topics;
+    }
+
 }
 
 
@@ -85,6 +95,18 @@ class Topic extends Model {
     int viewCount;
 
     int commentCount;
+
+    Category _category;
+
+    Category get category {
+        if (categoryId == null) {
+            return null;
+        }
+        if (_category == null) {
+            _category = categoryDao.get(categoryId);
+        }
+        return _category;
+    }
 
     preUpdate() {
         this.updatedAt = new DateTime.now().millisecondsSinceEpoch;
