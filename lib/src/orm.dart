@@ -83,8 +83,9 @@ abstract class Model {
             var fieldNames = [];
             ClassMirror cm = reflectClass(modelType);
             for (var member in cm.members.values) {
-                if (member is VariableMirror && !member.isStatic) {
-                    fieldNames.add(MirrorSystem.getName(member.simpleName));
+                var name = MirrorSystem.getName(member.simpleName);
+                if (member is VariableMirror && !member.isStatic && !name.startsWith("_")) {
+                    fieldNames.add(name);
                 }
             }
             table2FieldNames[table] = fieldNames;
