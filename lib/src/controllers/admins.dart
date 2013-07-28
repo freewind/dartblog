@@ -37,7 +37,6 @@ adminLogin(Request req) {
 }
 
 adminDoLogin(Request req) {
-    print("### in admiNDoLogin");
     _getPostData(req, (postData) {
         String email = postData['email'], password = postData['password'];
         var users = userDao.findBy("email=?", [email]);
@@ -124,7 +123,6 @@ adminCategories(Request req) {
     if (_isNotLoggedIn(req)) return adminLogin(req);
 
     var categories = categoryDao.listAll("displayOrder desc");
-    print("### categories: $categories");
     req.response.send(views.adminCategories(categories));
 }
 
@@ -170,6 +168,5 @@ adminCreateCategory(req) {
 bool _isNotLoggedIn(Request req) {
     HttpRequest httpRequest = req.input;
     var userId = httpRequest.session[USER_ID_KEY];
-    print("### userId : $userId");
     return userId == null || userId.trim().isEmpty;
 }

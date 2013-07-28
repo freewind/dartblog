@@ -9,9 +9,7 @@ pasteImage(Request req) {
         var body = postData['file'];
         var prefix = "data:image/png;base64,";
         var bStr = body.substring(prefix.length);
-        print("### bStr: $bStr");
         var bs = CryptoUtils.base64StringToBytes(bStr);
-        print("### bs: ${bs.runtimeType}");
         var imgPath = "uploads/images/${nextFileName()}.png";
         var file = new File("web/$imgPath");
         file.writeAsBytesSync(bs);
@@ -25,10 +23,6 @@ uploadFile(Request req) {
     _getPostData(req, (postData) {
         var filename = postData['filename'];
         var fileData = postData['data'];
-
-        print("###############################################################");
-        print(fileData);
-
 
         var base64 = fileData.substring(fileData.indexOf(fileType) + fileType.length);
         var bin = CryptoUtils.base64StringToBytes(base64);

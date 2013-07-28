@@ -90,7 +90,6 @@ abstract class Model {
             }
             table2FieldNames[table] = fieldNames;
         }
-        print(fieldNames);
     }
 
     fromRow(Row row) {
@@ -118,7 +117,6 @@ abstract class Model {
             insert into $table (${fieldNames.join(', ')})
             values (${fieldNames.map((_) => '?').join(', ')})
         """;
-        print(sql);
         database.execute(sql, fieldNames.map((n) => getFieldValue(n)).toList());
         postInsert();
     }
@@ -132,7 +130,6 @@ abstract class Model {
         var sql = """
             update $table set ${sets} where id=?
         """;
-        print(sql);
         postUpdate();
         return database.execute(sql, params) == 1;
     }
