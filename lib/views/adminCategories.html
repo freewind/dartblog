@@ -5,7 +5,11 @@
     <ul>
         @for(var category in categories) {
         <li>@category.name
-            [<a href="/admin/deleteCategory?id=@category.id" onclick="return confirm('delete?')">x</a>]
+            <span>
+            [<a href="/admin/editCategory/@category.id">Edit</a>]
+                -
+            [<a href="/admin/deleteCategory?id=@category.id" onclick="return confirm('delete?')">Delete</a>]
+            </span>
         </li>
         }
     </ul>
