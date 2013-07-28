@@ -28,6 +28,7 @@ void main() {
         app.post('/upload').listen(ctrl.uploadFile);
 
         app.get('/rss').listen(ctrl.rss);
+        app.get('/rss.xml').listen(ctrl.rss);
 
         app.get('/hello/:name.:lastname?').listen((request) {
             request.response
