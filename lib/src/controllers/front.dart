@@ -42,11 +42,7 @@ rss(Request req) {
 }
 
 fix(Request req) {
-    for(var topic in topicDao.listAll()) {
-        topic.createdAt = new DateTime.now().millisecond;
-        topic.update();
-    }
-    req.response.send("OK");
+    req.response.send("todo");
 }
 
 todo(Request req) {

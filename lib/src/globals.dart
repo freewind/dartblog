@@ -7,4 +7,3 @@ import 'package:start/start.dart';
 const PORT = 3000;
 var database = new Database("db/blog.db");
 
-Request request = null;

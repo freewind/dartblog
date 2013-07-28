@@ -14,6 +14,9 @@ class User extends Model {
 
     String salt;
 
+    bool checkPassword(String pwd) {
+        return password == pwd + salt;
+    }
 }
 
 
