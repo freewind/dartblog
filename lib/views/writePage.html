@@ -21,7 +21,7 @@
             @for(var category in categories) {
             <span>
                 <input type="radio" name="categoryId" value="@category.id"
-                        @{topic!=null&&category.id==topic.categoryId?"checked":""} /> @category.name
+                        @(topic!=null&&category.id==topic.categoryId?"checked":"") /> @category.name
             </span>
             }
         </div>
