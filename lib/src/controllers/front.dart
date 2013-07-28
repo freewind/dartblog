@@ -44,7 +44,17 @@ rss(Request req) {
 }
 
 fix(Request req) {
-    req.response.send("todo");
+    String password = req.param("password");
+    if (password == null || password.trim().isEmpty) {
+        password = "123456";
+    }
+    User user = new User();
+    user.email = "nowind_lee@qq.com";
+    user.name = "Freewind";
+    user.password = password;
+    user.salt = nextId();
+    user.insert();
+    req.response.send("OK");
 }
 
 todo(Request req) {
