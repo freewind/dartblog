@@ -3,18 +3,15 @@ dependencies:
   unittest: any
   crypto: any
   dart-sqlite:
-#    git: git://github.com/freewind/dart-sqlite
-    path: /Users/freewind/dev/github/dart-sqlite
+    git: https://github.com/freewind/dart-sqlite
+#    path: /Users/freewind/dev/github/dart-sqlite
   start: any
-  hop:
-    git: https://github.com/kevmoo/hop.dart.git
   petitparser:
-#    git: git://github.com/freewind/PetitParserDart.git
-    path: /Users/freewind/dev/github/PetitParserDart
+    git: https://github.com/freewind/PetitParserDart.git
+#    path: /Users/freewind/dev/github/PetitParserDart
   RythmDart:
-    path: /Users/freewind/dev/workspace/RythmDart
+    git: https://github.com/freewind/RythmDart.git
+#    path: /Users/freewind/dev/workspace/RythmDart
   uuid: any
   intl: any
   pathos: any
-  base64_codec: any
-  crypto: any
