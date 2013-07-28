@@ -1,0 +1,10 @@
+#site-title a {
+    color: #DDDDDD;
+    font-size: 45px;
+    text-decoration: none;
+}
+
+#site-sub-title {
+    color: #DDDDDD;
+    font-size: 20px;
+}
