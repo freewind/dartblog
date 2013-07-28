@@ -9,13 +9,13 @@
         <language>en</language>
         @for(var item in items) {
         <item>
-            <title>@{item["title"]}</title>
+            <title>@item["title"]</title>
             <description>
                 <![CDATA[
-                @{item["content"]}
+                @item["content"]
                 ]]>
             </description>
-            <link>@{item["url"]}</link>
+            <link>@item["url"]</link>
         </item>
         }
     </channel>
