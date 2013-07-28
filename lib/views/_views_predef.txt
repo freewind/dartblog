@@ -1,1 +1,2 @@
 import "../../src/models.dart";
+import "../../src/view_helpers.dart" as helper;

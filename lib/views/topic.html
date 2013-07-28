@@ -13,7 +13,9 @@
             <a href="/topic/@topic.id">@topic.title</a>
         </h1>
         <p class="meta">
-            <time datetime="@topic.createdAt" pubdate="" data-updated="true">@topic.createdAt</time>
+            <time datetime="@topic.createdAt" pubdate="" data-updated="true">
+                @helper.formatDateTime(topic.createdAt)
+            </time>
             • <a rel="bookmark" href="/topic/@topic.id">∞</a>
             @if(category!=null) {
             分类：<span>[@category.name]</span>
