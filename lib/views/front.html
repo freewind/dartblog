@@ -61,43 +61,25 @@ To start blogging with …">
 </head>
 <body>
 <header role="banner">
-    <hgroup>
-        <h1><a href="./Octopress_files/Octopress.html">Freewind.me</a></h1>
-
-        <h2>FocusOn: &nbsp;&nbsp; [ Java / Scala / Dart]</h2>
-
-    </hgroup>
-
+    <div id="site-title"><a href="http://freewind.me">Freewind.me</a></div>
+    <div id="site-sub-title">FocusOn: &nbsp;&nbsp; [ Java / Scala / Dart]</div>
 </header>
 <nav role="navigation">
     <ul class="subscription" data-subscription="rss">
-        <li><a href="http://octopress.org/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-
+        <li><a href="http://freewind.me/rss.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
     </ul>
 
     <form action="http://google.com/search" method="get">
         <fieldset role="search">
-            <input type="hidden" name="q" value="site:octopress.org">
+            <input type="hidden" name="q" value="site:freewind.me">
             <input class="search" type="text" name="q" results="0" placeholder="Search">
         </fieldset>
-        <fieldset class="mobile-nav"><select>
-            <option value="">Navigate…</option>
-            <option value="http://octopress.org/">» Blog</option>
-            <option value="http://octopress.org/docs">» Documentation</option>
-            <option value="http://octopress.org/help">» Help</option>
-            <option value="http://github.com/imathis/octopress">» Source</option>
-            <option value="http://octopress.org/atom.xml">» RSS</option>
-        </select></fieldset>
     </form>
 
     <ul role="main-navigation" class="main-navigation">
         <li><a href="/">Index</a></li>
         <li><a href="/list">文章列表</a></li>
-        <li><a href="/">关于作者</a></li>
-        <li><a href="/">RSS</a></li>
-        <li><a href="/write">Write</a></li>
-        <li><a href="/admin/login">Login</a></li>
-        <li><a href="/admin/categories">Categories</a></li>
+        <li><a href="/rss.xml" target="_blank">RSS</a></li>
     </ul>
 
 </nav>
@@ -110,7 +92,11 @@ To start blogging with …">
 </div>
 <footer role="contentinfo"><p>
     Copyright © 2012 - Brandon Mathis -
-    <span class="credit">Powered by <a href="./Octopress_files/Octopress.html">Octopress</a></span>
+    <span class="credit">Powered by <a href="http://www.dartlang.org" target="_blank">Dart</a>
+        , <a href="http://www.sqlite.org" target="_blank">Sqlite</a>
+        and  <a href="http://octopress.org" target="_blank">Octopress</a>
+    </span>
+    <span><a href="/admin/write">[ Login ]</a></span>
 </p>
 
 </footer>
