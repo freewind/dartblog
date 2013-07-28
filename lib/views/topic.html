@@ -1,5 +1,5 @@
 @extends front
-@params Topic topic, Category category
+@params Topic topic
 
 <script>
     $(document).ready(function(){
@@ -16,11 +16,10 @@
             <time datetime="@topic.createdAt" pubdate="" data-updated="true">
                 @helper.formatDateTime(topic.createdAt)
             </time>
-            • <a rel="bookmark" href="/topic/@topic.id">∞</a>
-            @if(category!=null) {
-            分类：<span>[@category.name]</span>
-            }
-            标签：<span>@topic.tags</span>
+            -
+            <span>[@topic.category.name]</span>
+            -
+            <span>@topic.tags</span>
         </p>
     </header>
     <div class="entry-content">

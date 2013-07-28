@@ -138,8 +138,21 @@ adminDeleteCategory(req) {
 
 adminEditCategory(req) {
     if (_isNotLoggedIn(req)) return adminLogin(req);
+    var id = req.param("id");
+    var category = categoryDao.get(id);
+    req.response.send(views.adminEditCategory(category));
+}
 
-    req.response.send("TODO");
+adminUpdateCategory(req) {
+    if (_isNotLoggedIn(req)) return adminLogin(req);
+    _getPostData(req, (postData) {
+        var id = postData["id"],
+        name = postData["name"];
+        var category = categoryDao.get(id);
+        category.name = name;
+        category.update();
+        adminCategories(req);
+    });
 }
 
 adminCreateCategory(req) {

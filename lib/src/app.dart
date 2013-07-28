@@ -8,12 +8,16 @@ void main() {
     start(public: 'web', port: PORT).then((Server app) {
 
         app.get('/').listen(ctrl.index);
-        app.get('/list').listen(ctrl.list);
+        app.get('/categories').listen(ctrl.categories);
+        app.get('/categories/:name').listen(ctrl.categories);
         app.get('/fix').listen(ctrl.fix);
 
         app.get('/initData').listen(ctrl.initData);
         app.get('/write').listen(ctrl.writePage);
         app.get('/topic/:id').listen(ctrl.topic);
+        app.get('/categories').listen(ctrl.categories);
+        app.get('/categories/:name').listen(ctrl.categories);
+
         app.post('/write').listen(ctrl.adminSaveTopic);
         app.get('/admin/login').listen(ctrl.adminLogin);
         app.post('/admin/login').listen(ctrl.adminDoLogin);
@@ -24,6 +28,9 @@ void main() {
         app.get('/admin/categories').listen(ctrl.adminCategories);
         app.get('/admin/deleteCategory').listen(ctrl.adminDeleteCategory);
         app.post('/admin/createCategory').listen(ctrl.adminCreateCategory);
+        app.get('/admin/editCategory/:id').listen(ctrl.adminEditCategory);
+        app.post('/admin/editCategory').listen(ctrl.adminUpdateCategory);
+
         app.post('/pasteImage').listen(ctrl.pasteImage);
         app.post('/upload').listen(ctrl.uploadFile);
 

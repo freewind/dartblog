@@ -1,5 +1,5 @@
 @extends front
-@params List topics
+@params List topics, List categories
 
 <script>
     $(document).ready(function () {
@@ -19,7 +19,10 @@
                 <time datetime="@helper.formatDateTime(topic.createdAt, 'yyyy-MM-ddTHH:mm:ss')" pubdate="" data-updated="true">
                     @helper.formatDateTime(topic.createdAt)
                 </time>
-                • <a rel="bookmark" href="http://octopress.org/blog/2011/07/23/octopress-20-surfaces/">∞</a>
+                -
+                <span>[@topic.category.name]</span>
+                -
+                <span>@topic.tags</span>
             </p>
         </header>
         @if(topic_isFirst) {
@@ -31,10 +34,21 @@
     }
 
     <div class="pagination">
-
-        <a href="http://octopress.org/archives">Blog Archives</a>
-
+        <a href="/categories">--- 显示更多 ---</a>
     </div>
 </div>
+
+<aside class="sidebar">
+    <section>
+        <h1>分类</h1>
+        <ul id="categories">
+            @for(var category in categories) {
+            <li class="loading"><a href="/categories/@category.name">@category.name</a></li>
+            }
+        </ul>
+    </section>
+</aside>
+
+<span class="toggle-sidebar"></span>
 
 

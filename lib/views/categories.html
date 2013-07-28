@@ -1,0 +1,47 @@
+@extends front
+@params Category category, List categories
+
+<style>
+    .category {
+        padding: 40px;
+    }
+
+    .blog-list {
+        padding-left: 40px;
+    }
+</style>
+
+<div class="blog-index">
+    @{
+        var list = categories;
+        if(category!=null) {
+            list = [category];
+        }
+    }
+    @for(var category in list) {
+    <div class="category">
+        <h2>@category.name</h2>
+        <ol class="blog-list">
+            @for(var topic in category.topics) {
+            <li>
+                <a href="/topic/@topic.id">@topic.title</a>
+            </li>
+            }
+        </ol>
+    </div>
+    }
+</div>
+
+<aside class="sidebar">
+    <section>
+        <h1>分类</h1>
+        <ul id="categories">
+            <li class="loading"><a href="/categories">全部</a></li>
+            @for(var category in categories) {
+            <li class="loading"><a href="/categories/@category.name">@category.name</a></li>
+            }
+        </ul>
+    </section>
+</aside>
+
+<span class="toggle-sidebar"></span>
