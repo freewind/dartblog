@@ -5,7 +5,7 @@ import "globals.dart";
 import "controllers.dart" as ctrl;
 
 void main() {
-    start(public: 'web', port: PORT).then((Server app) {
+    start(public: 'web', host: "0.0.0.0", port: PORT).then((Server app) {
 
         app.get('/').listen(ctrl.index);
         app.get('/categories').listen(ctrl.categories);
